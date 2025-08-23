@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Jobs\SendWelcomeMail;
 
 class RegisteredUserController extends Controller
 {
@@ -42,6 +43,9 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+
+        //Dispatching the welcome email job after registration
+        SendWelcomeMail::dispatch($user);
 
         Auth::login($user);
 
