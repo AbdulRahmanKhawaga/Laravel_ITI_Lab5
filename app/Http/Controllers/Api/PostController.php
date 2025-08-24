@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('user')->get();
         if(!$posts){
             return response()->json([
               'message'=> 'Not found'
