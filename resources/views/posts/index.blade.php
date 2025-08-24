@@ -12,9 +12,7 @@
 <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Lab 1 (Index & Destroy)</h1>
-        @if(Auth::user()->is_admin)
         <a href="{{ route('posts.create') }}" class="btn btn-success">Create Post</a>
-        @endif
     </div>
 
     <div class="card">
@@ -47,8 +45,10 @@
                         <td>{{ $post->created_at }}</td>
                         <td>
                             <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info btn-sm">View</a>
-                            @if(Auth::user()->is_admin)
+                            @if(Auth::user()->is_admin || Auth::id() === $post->user_id)
                             <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            @endif
+                            @if(Auth::user()->is_admin)
                             <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')

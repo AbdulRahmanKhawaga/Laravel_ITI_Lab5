@@ -61,12 +61,19 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Post::find($id);
-        $post->update($request->all());
         if(!$post){
             return response()->json([
                'message'=> 'Not found'
             ],404);
         }
+
+        if($request->user()->id !== $post->user_id){
+            return response()->json([
+               'message'=> 'Unauthorized - You can only edit your own posts'
+            ],403);
+        }
+
+        $post->update($request->all());
         return response()->json([
            'message'=>'Post updated successfully',
            'data'=> $post,
