@@ -14,6 +14,11 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        if(!$posts){
+            return response()->json([
+              'message'=> 'Not found'
+            ],404);
+        }
         return response()->json([
             'message'=>'Posts retrieved successfully',
            'data'=>$posts,
